@@ -1,0 +1,9 @@
+.idea
+*.iml
+
+node_modules
+persistence
+
+cookies.json
+files
+notes.txt
