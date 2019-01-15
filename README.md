@@ -21,7 +21,7 @@ It requires a working installation of `libmagic`. On macOS this can easily be in
 
 ### Configuration
 
-As well as the required environment variables (listed below), the script requires a logged-in session cookie. I dumped my cookies to a JSON file using a browser extension. The script requires the session cookies to be stored in a file named `cookies.json` at root level.
+As well as the required environment variables (listed below), the script requires a logged-in session cookie. I dumped my cookies to a JSON file using a browser extension. The only cookie required (at the time of writing) is `session_id` for the domain `.patreon.com`. The script requires the session cookie to be stored as a JSON object inside a JSON array in a file named `cookies.json` at root level.
  
 Environment variables:
 
