@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
-/usr/bin/env node bin/patreon-downloader.js
+DIR=${pwd}
+cd "$(dirname "$0")" && node ./bin/patreon-downloader.js
+cd ${DIR}
