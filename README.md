@@ -1,0 +1,51 @@
+# Patreon downloader
+
+### Summary
+
+A collection of scripts to enable automatic downloading, tagging and organising of audio files posted by Patreon creators. The script uses [Puppeteer](https://developers.google.com/web/tools/puppeteer/) to control an instance of the Chromium browser. A Patreon account is required, and if you want to access subscription-only content, you will need to pay for it. This script purely replaces a manual process with an automated one. It can be run on a cron job or by some other scheduling mechanism.
+
+The script supports downloading of mp3 and wav files. mp3 files will also have a comment (COMM) id3v2 tag added, the content of which will be the text content of the blog post, followed by any tags set by the creator. The post's associated image will also be embeded as album art in the file. As wav does not support such metadata, no such tagging/embedding will occur.
+
+The script keeps track of any files downloaded in a text file and will not re-download them. Once files have been downloaded they will be moved to a final destination directory (for me, a hard disk attached to my media centre), either on the same machine using `mv` or elsewhere using `scp`.
+
+### Dependencies
+* [nodeJS](https://nodejs.org)
+* [cURL](https://curl.haxx.se/)
+* [id3 A.K.A. id3mtag](https://squell.github.io/id3/)  
+* [eyeD3](https://eyed3.readthedocs.io/en/latest/) (requires Python 2.7+ and libmagic)
+
+To install id3mtag on macOS, refer to my blog post at [https://endofhome.github.io/2019/01/11/compiling_id3mtag_for_macos.html](https://endofhome.github.io/2019/01/11/compiling_id3mtag_for_macos.html)
+
+eyeD3 can be installed via `pip`: ```pip install eyeD3```
+It requires a working installation of `libmagic`. On macOS this can easily be installed via Homebrew: ```brew install libmagic```, or on Ubuntu, ```apt-get install libmagic```.
+
+### Configuration
+
+As well as the required environment variables (listed below), the script requires a logged-in session cookie. I dumped my cookies to a JSON file using a browser extension. The script requires the session cookies to be stored in a file named `cookies.json` at root level.
+ 
+Environment variables:
+
+| Variable | Description|
+|----------|------------|
+| PATREON_ARTIST | The Patreon artist/creator that you are supporting |
+| DESTINATION_DIRECTORY |    The directory you want to save your files in. For me, a directory in a disk attached to my media centre. This directory doesn't have to be on the same machine as you are running the script on, if you have an ssh key stored the script will be able to use `scp` to transfer the files |
+| DESTINATION_DIRECTORY_FROM_MAC | A specially formatted address for [`scp` on Mac](https://stackoverflow.com/questions/6697985/problem-with-scp-on-mac-os-x-scp-doesnt-like-spaces-in-filenames-fix-does/12920964#12920964) (I hope to move this into the code sometime) |
+| DESTINATION_MACHINE_NAME | Name of the machine where the destination directory exists |
+| MEDIA_CENTRE_USERNAME | Username for the account you will use to `scp` into your media centre |
+| MEDIA_CENTRE_HOST | Host for your media centre (used for `scp`) | 
+
+### How do I run it?
+
+`npm i` to install the nodeJS dependencies.
+
+Install other dependencies mentioned above, and ensure the `cookies.json` file and necessary environment variables are present.
+
+`./run.sh` will start the process.
+
+
+
+
+
+
+
+
