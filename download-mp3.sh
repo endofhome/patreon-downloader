@@ -15,7 +15,7 @@ echo "downloading ${TITLE}"
 curl -s ${URL} --output ${FILE_PATH}
 
 echo "tagging ${TITLE}"
-id3 -c "$COMMENT" -y ${YEAR} ${FILE_PATH}
+id3 -c "$COMMENT" -y ${YEAR} ${FILE_PATH} >/dev/null 2>&1
 
 echo "downloading artwork for ${TITLE}"
 TITLE_NO_WHITESPACE=$(echo ${TITLE} | sed -e 's/ /_/g')
