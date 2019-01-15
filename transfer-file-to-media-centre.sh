@@ -16,7 +16,7 @@ else
 fi
 
 if [[ $(uname -a | awk '{print $2}') = ${DESTINATION_MACHINE_NAME} ]]; then
-  mv "${FILE_PATH}" ${DESTINATION}
+  mv "${FILE_PATH}" "${DESTINATION}"
 else
   scp "${FILE_PATH}" ${MEDIA_CENTRE_USERNAME}@${MEDIA_CENTRE_HOST}:"${DESTINATION}"
 fi
