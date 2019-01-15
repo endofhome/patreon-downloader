@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-/usr/bin/env node patreon-downloader.js
+/usr/bin/env node bin/patreon-downloader.js

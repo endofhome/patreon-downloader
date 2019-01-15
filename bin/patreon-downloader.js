@@ -3,7 +3,7 @@ const fs = require('fs');
 const exec = require('child_process').exec;
 
 async function loadCookies(page) {
-    const cookiesArr = require(`./cookies`);
+    const cookiesArr = require(`../cookies`);
     if (cookiesArr.length !== 0) {
         for (let cookie of cookiesArr) {
             await page.setCookie(cookie)
@@ -222,12 +222,12 @@ async function main() {
             return song.notes.join('\n').replace(/"/g, '\\"');
         }
 
-        const mp3Command = `./download-mp3.sh "${song.url}" files/${song.file} "${reformatNotesForShellScript()}\n\n${song.tags}" ${song.year} "${song.title}" "${song.artwork}"`;
+        const mp3Command = `./bin/download-mp3.sh "${song.url}" files/${song.file} "${reformatNotesForShellScript()}\n\n${song.tags}" ${song.year} "${song.title}" "${song.artwork}"`;
         download(mp3Command);
     }
 
     function downloadWav(song) {
-        const wavCommand = `./download-wav.sh "${song.url}" files/${song.file} "${song.title}"`;
+        const wavCommand = `./bin/download-wav.sh "${song.url}" files/${song.file} "${song.title}"`;
         download(wavCommand)
     }
 

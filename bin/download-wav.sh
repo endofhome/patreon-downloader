@@ -11,4 +11,4 @@ TITLE=$3
 echo "downloading ${TITLE}"
 curl -s ${URL} --output ${FILE_PATH}
 
-./transfer-file-to-media-centre.sh ${TITLE} ${FILE_PATH}
+./bin/transfer-file-to-media-centre.sh ${TITLE} ${FILE_PATH}
