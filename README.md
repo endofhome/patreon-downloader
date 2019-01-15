@@ -31,8 +31,8 @@ Environment variables:
 | DESTINATION_DIRECTORY |    The directory you want to save your files in. For me, a directory in a disk attached to my media centre. This directory doesn't have to be on the same machine as you are running the script on, if you have an ssh key stored the script will be able to use `scp` to transfer the files |
 | DESTINATION_DIRECTORY_FROM_MAC | A specially formatted address for [`scp` on Mac](https://stackoverflow.com/questions/6697985/problem-with-scp-on-mac-os-x-scp-doesnt-like-spaces-in-filenames-fix-does/12920964#12920964) (I hope to move this into the code sometime) |
 | DESTINATION_MACHINE_NAME | Name of the machine where the destination directory exists |
-| MEDIA_CENTRE_USERNAME | Username for the account you will use to `scp` into your media centre |
-| MEDIA_CENTRE_HOST | Host for your media centre (used for `scp`) | 
+| DESTINATION_MACHINE_USERNAME | Username for the account you will use to `scp` into the destination machine |
+| DESTINATION_MACHINE_HOST | Host for the destination machine (used for `scp`) | 
 
 ### How do I run it?
 

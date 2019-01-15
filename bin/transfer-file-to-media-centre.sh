@@ -18,7 +18,7 @@ fi
 if [[ $(uname -a | awk '{print $2}') = ${DESTINATION_MACHINE_NAME} ]]; then
   mv "${FILE_PATH}" "${DESTINATION}"
 else
-  scp "${FILE_PATH}" ${MEDIA_CENTRE_USERNAME}@${MEDIA_CENTRE_HOST}:"${DESTINATION}"
+  scp "${FILE_PATH}" ${DESTINATION_MACHINE_USERNAME}@${DESTINATION_MACHINE_HOST}:"${DESTINATION}"
 fi
 
 echo "$(date +"%Y-%m-%d %H:%M:%S"),$TITLE" >> persistence/downloaded.txt
