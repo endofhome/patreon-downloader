@@ -18,7 +18,7 @@ async function main() {
     await loadCookies(page);
 
     console.log("Starting Chromium and looking for new songs to download...");
-    await page.goto(`https://www.patreon.com/${process.env.PATREON_ARTIST}/posts`, {timeout: 10000, waitUntil: 'networkidle0'});
+    await page.goto(`https://www.patreon.com/${process.env.PATREON_ARTIST}/posts`, {timeout: 100000, waitUntil: 'networkidle0'});
 
     const waitTime = 0.5;
 
