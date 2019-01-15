@@ -10,7 +10,7 @@ FILE_PATH=$2
 echo "transferring ${TITLE} to media centre"
 
 if [[ $OSTYPE = "darwin"* ]]; then
-  DESTINATION=${DESTINATION_DIRECTORY_FROM_MAC}
+  DESTINATION=$(echo ${DESTINATION_DIRECTORY} | sed -e 's/ /\\ /g')
 else
   DESTINATION=${DESTINATION_DIRECTORY}
 fi
