@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const puppeteer = require('puppeteer');
 const loadCookies = require("../js/cookies");
 const getLazyLoadedImages = require("../js/lazyLoadImages");
@@ -163,9 +165,6 @@ async function main() {
 
     // print songs JSON
     // console.log(JSON.stringify(songs));
-
-    // hold chrome open so I can play around
-    // await page.waitFor(100000);
 
     browser.close();
     downloadTagAndOrganiseFiles(songs);
