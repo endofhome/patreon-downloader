@@ -1,16 +1,7 @@
-const puppeteer = require('puppeteer');
 const fs = require('fs');
 const exec = require('child_process').exec;
-
-async function loadCookies(page) {
-    const cookiesArr = require(`../cookies`);
-    if (cookiesArr.length !== 0) {
-        for (let cookie of cookiesArr) {
-            await page.setCookie(cookie)
-        }
-        console.log('Session has been loaded in the browser');
-    }
-}
+const puppeteer = require('puppeteer');
+const loadCookies = require("../js/cookies");
 
 async function main() {
     const browser = await puppeteer.launch({headless: true});
