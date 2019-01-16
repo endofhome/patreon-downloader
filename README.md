@@ -8,6 +8,8 @@ The script supports downloading of mp3 and wav files. mp3 files will also have a
 
 The script keeps track of any files downloaded in a text file and will not re-download them. Once files have been downloaded they will be moved to a final destination directory (for me, a hard disk attached to my media centre), either on the same machine using `mv` or elsewhere using `scp`.
 
+Once the file is downloaded, an update of the audio library in a Kodi installation is triggered (given the correct configuration).
+
 ### Dependencies
 * [nodeJS](https://nodejs.org)
 * [cURL](https://curl.haxx.se/)
@@ -31,7 +33,10 @@ Environment variables:
 | DESTINATION_DIRECTORY |    The directory you want to save your files in. For me, a directory in a disk attached to my media centre. This directory doesn't have to be on the same machine as you are running the script on, if you have an ssh key stored the script will be able to use `scp` to transfer the files |
 | DESTINATION_MACHINE_NAME | Name of the machine where the destination directory exists |
 | DESTINATION_MACHINE_USERNAME | Username for the account you will use to `scp` into the destination machine |
-| DESTINATION_MACHINE_HOST | Host for the destination machine (used for `scp`) | 
+| DESTINATION_MACHINE_HOST | Host for the destination machine (used for `scp`) |
+| KODI_USERNAME | Username for Kodi installation |
+| KODI_PASSWORD | Password for Kodi installation |
+| KODI_PORT | Port for Kodi installation |
 
 ### How do I run it?
 

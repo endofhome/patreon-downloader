@@ -22,4 +22,5 @@ else
 fi
 
 echo "$(date +"%Y-%m-%d %H:%M:%S"),$TITLE" >> persistence/downloaded.txt
+./update-kodi-audio-library.sh
 echo "processing ${TITLE} completed"
