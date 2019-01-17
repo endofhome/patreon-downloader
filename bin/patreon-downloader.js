@@ -19,9 +19,9 @@ async function main() {
         // all executed in the context of the browser
 
         return [...document.querySelectorAll('[data-tag="post-card"]')]
-            .filter(postCard => {
-                return postCard.querySelector('a[data-tag="post-file-download"]') !== null
-            }).map(postCard => {
+            .filter(postCard =>
+                hasFile(postCard)
+            ).map(postCard => {
                 console.log("processing " + postCard.querySelector('a[data-tag="post-file-download"]').textContent);
 
                 const songNotes = postContent(postCard);
@@ -78,6 +78,10 @@ async function main() {
                     year: year
                 }
             });
+
+        function hasFile(postCard) {
+            return postCard.querySelector('a[data-tag="post-file-download"]') !== null
+        }
 
         function postContent(postCard) {
             const postContentCollapsed = postCard.querySelector('[data-tag="post-content-collapse"]');
