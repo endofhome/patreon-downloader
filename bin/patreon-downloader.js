@@ -18,56 +18,6 @@ async function main() {
     const songs = await page.evaluate(() => {
         // all executed in the context of the browser
 
-        function dateFor(postCard) {
-            const textContent = postCard.querySelector('[data-tag="post-published-at"]').textContent;
-            try {
-                const months = {
-                    Jan: '01',
-                    Feb: '02',
-                    Mar: '03',
-                    Apr: '04',
-                    May: '05',
-                    Jun: '06',
-                    Jul: '07',
-                    Aug: '08',
-                    Sep: '09',
-                    Oct: '10',
-                    Nov: '11',
-                    Dec: '12'
-                };
-
-                function commaIsPresentIn(string) {
-                    return string.includes(',')
-                }
-
-                function padWithZero(string) {
-                    if (string.length === 1) {
-                        return '0' + string;
-                    } else {
-                        return string;
-                    }
-                }
-
-                const timeStripped = textContent.replace(/ at .*/g, '');
-                let split = timeStripped.split(" ");
-                split[0] = months[split[0]];
-
-                if (commaIsPresentIn(timeStripped)) {
-                    const year = split.splice(2, 1);
-                    split.unshift(year[0]);
-                    split[2] = padWithZero(split[2].replace(',', ''));
-                    return split.join('-')
-                } else {
-                    split.unshift(new Date().getFullYear().toString());
-                    split[2] = padWithZero(split[2]);
-                    return split.join('-')
-                }
-
-            } catch (e) {
-                throw Error(`couldn't parse date: ${textContent}`)
-            }
-        }
-
         return [...document.querySelectorAll('[data-tag="post-card"]')]
             .filter(postCard => {
                 // filter out any posts without files
@@ -158,6 +108,56 @@ async function main() {
                     );
                 });
                 return result;
+            }
+        }
+
+        function dateFor(postCard) {
+            const months = {
+                Jan: '01',
+                Feb: '02',
+                Mar: '03',
+                Apr: '04',
+                May: '05',
+                Jun: '06',
+                Jul: '07',
+                Aug: '08',
+                Sep: '09',
+                Oct: '10',
+                Nov: '11',
+                Dec: '12'
+            };
+
+            const textContent = postCard.querySelector('[data-tag="post-published-at"]').textContent;
+            try {
+                const timeStripped = textContent.replace(/ at .*/g, '');
+                let split = timeStripped.split(" ");
+                split[0] = months[split[0]];
+
+                if (commaIsPresentIn(timeStripped)) {
+                    const year = split.splice(2, 1);
+                    split.unshift(year[0]);
+                    split[2] = padWithZero(split[2].replace(',', ''));
+                    return split.join('-')
+                } else {
+                    split.unshift(new Date().getFullYear().toString());
+                    split[2] = padWithZero(split[2]);
+                    return split.join('-')
+                }
+
+            } catch (e) {
+                throw Error(`couldn't parse date: ${textContent}`)
+            }
+
+            function commaIsPresentIn(string) {
+                return string.includes(',')
+            }
+
+            function padWithZero(string) {
+                if (string.length === 1) {
+                    return '0' + string;
+                } else {
+                    return string;
+                }
             }
         }
     });
