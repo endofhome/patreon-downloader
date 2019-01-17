@@ -20,7 +20,6 @@ async function main() {
 
         return [...document.querySelectorAll('[data-tag="post-card"]')]
             .filter(postCard => {
-                // filter out any posts without files
                 return postCard.querySelector('a[data-tag="post-file-download"]') !== null
             }).map(postCard => {
                 console.log("processing " + postCard.querySelector('a[data-tag="post-file-download"]').textContent);
