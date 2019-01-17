@@ -24,9 +24,7 @@ async function main() {
             }).map(postCard => {
                 console.log("processing " + postCard.querySelector('a[data-tag="post-file-download"]').textContent);
 
-                const songNotes = postContent(postCard).map(element => {
-                    return element.textContent
-                });
+                const songNotes = postContent(postCard);
 
                 function notes() {
                     if (songNotes.length % 2 === 0) {
@@ -83,7 +81,8 @@ async function main() {
 
         function postContent(postCard) {
             const postContentCollapsed = postCard.querySelector('[data-tag="post-content-collapse"]');
-            return postContentCollapsed ? collapsedContent(postContentCollapsed) : uncollapsedContent(postCard);
+            const postContent = postContentCollapsed ? collapsedContent(postContentCollapsed) : uncollapsedContent(postCard);
+            return postContent.map(element => element.textContent);
 
             function collapsedContent(postContent) {
                 const containsParagraphs = postContent.querySelectorAll('p');
