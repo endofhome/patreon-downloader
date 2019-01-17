@@ -19,47 +19,14 @@ async function main() {
         // all executed in the context of the browser
 
         return [...document.querySelectorAll('[data-tag="post-card"]')]
-            .filter(postCard =>
-                hasFile(postCard)
-            ).map(postCard => {
+            .filter(postCard => hasFile(postCard))
+            .map(postCard => {
                 console.log("processing " + postCard.querySelector('a[data-tag="post-file-download"]').textContent);
-
-                const songNotes = postContent(postCard);
-
-                function notes() {
-                    if (songNotes.length % 2 === 0) {
-                        const firstHalf = [];
-                        const secondHalf = [];
-                        songNotes.forEach((songNote, index) => {
-                            if (index < (songNotes.length / 2)) {
-                                firstHalf.push(songNote);
-                            } else {
-                                secondHalf.push(songNote);
-                            }
-                        });
-
-                        if (firstHalf.length !== secondHalf.length) {
-                            throw Error(`Halves are of unequal length. First half: ${firstHalf.length}, second half: ${secondHalf.length}`)
-                        }
-
-                        firstHalf.forEach((note, index) => {
-                            if (note !== secondHalf[index]) {
-
-                                throw Error(`Notes are not duplicates. First note: ${note}, second note: ${secondHalf[index]}`)
-                            }
-                        });
-
-                        return firstHalf;
-                    } else {
-                        return songNotes;
-                    }
-                }
-
                 let secondAudioPlayerElement = postCard.querySelectorAll('[aria-label="Audio Player"]')[1];
                 let style = secondAudioPlayerElement.firstChild.firstChild.getAttribute('style');
+                const songNotes = postContent(postCard);
                 let date = dateFor(postCard);
                 let year = date.split('-')[0];
-
                 const artworkUrl = style.slice(23) // cut first 23 chars
                     .split('')
                     .reverse()
@@ -71,7 +38,7 @@ async function main() {
                     title: postCard.querySelector('[data-tag="post-title"]').textContent,
                     file: postCard.querySelector('a[data-tag="post-file-download"]').textContent,
                     url: postCard.querySelector('a[data-tag="post-file-download"]').href,
-                    notes: notes(),
+                    notes: validatedNotes(songNotes),
                     tags: postCard.querySelector('[data-tag="post-tags"]').firstChild.querySelector('div:nth-child(2').textContent,
                     artwork: artworkUrl,
                     publishedDate: date,
@@ -160,6 +127,34 @@ async function main() {
                 } else {
                     return string;
                 }
+            }
+        }
+
+        function validatedNotes(songNotes) {
+            if (songNotes.length % 2 === 0) {
+                const firstHalf = [];
+                const secondHalf = [];
+                songNotes.forEach((songNote, index) => {
+                    if (index < (songNotes.length / 2)) {
+                        firstHalf.push(songNote);
+                    } else {
+                        secondHalf.push(songNote);
+                    }
+                });
+
+                if (firstHalf.length !== secondHalf.length) {
+                    throw Error(`Halves are of unequal length. First half: ${firstHalf.length}, second half: ${secondHalf.length}`)
+                }
+
+                firstHalf.forEach((note, index) => {
+                    if (note !== secondHalf[index]) {
+                        throw Error(`Notes are not duplicates. First note: ${note}, second note: ${secondHalf[index]}`)
+                    }
+                });
+
+                return firstHalf;
+            } else {
+                return songNotes;
             }
         }
     });
