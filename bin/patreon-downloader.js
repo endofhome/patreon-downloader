@@ -22,11 +22,11 @@ async function main() {
             .filter(postCard => hasFile(postCard))
             .map(postCard => {
                 console.log("processing " + postCard.querySelector('a[data-tag="post-file-download"]').textContent);
-                let secondAudioPlayerElement = postCard.querySelectorAll('[aria-label="Audio Player"]')[1];
-                let style = secondAudioPlayerElement.firstChild.firstChild.getAttribute('style');
+                const    secondAudioPlayerElement = postCard.querySelectorAll('[aria-label="Audio Player"]')[1];
+                const style = secondAudioPlayerElement.firstChild.firstChild.getAttribute('style');
                 const songNotes = postContent(postCard);
-                let date = dateFor(postCard);
-                let year = date.split('-')[0];
+                const date = dateFor(postCard);
+                const year = date.split('-')[0];
                 const artworkUrl = style.slice(23) // cut first 23 chars
                     .split('')
                     .reverse()
