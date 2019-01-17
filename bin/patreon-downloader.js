@@ -27,12 +27,12 @@ async function main() {
                 const songNotes = postContent(postCard);
                 const date = dateFor(postCard);
                 const year = date.split('-')[0];
-                const artworkUrl = style.slice(23) // cut first 23 chars
-                    .split('')
-                    .reverse()
-                    .slice(3) // cut last 3 chars
-                    .reverse()
-                    .join('');
+                const artworkUrl = style.slice(23)
+                                        .split('')
+                                        .reverse()
+                                        .slice(3)
+                                        .reverse()
+                                        .join('');
 
                 return {
                     title: postCard.querySelector('[data-tag="post-title"]').textContent,
