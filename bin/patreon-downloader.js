@@ -18,36 +18,6 @@ async function main() {
     const songs = await page.evaluate(() => {
         // all executed in the context of the browser
 
-        function postContent(postCard) {
-            const postContentCollapsed = postCard.querySelector('[data-tag="post-content-collapse"]');
-
-            function collapsedContent() {
-                const containsParagraphs = postContentCollapsed.querySelectorAll('p');
-
-                function arrayOfPostContentCollapsed() {
-                    const notesHtmlWithBrTags = postContentCollapsed.firstChild.firstChild.firstChild.firstChild.innerHTML;
-                    const splitByBrTag = notesHtmlWithBrTags.split('<br><br>');
-                    const result = [];
-                    [1, 2].forEach(() => { // duplicating the notes so they match the output of finding by <p> tag
-                        splitByBrTag.forEach(note =>
-                            result.push({textContent: note})
-                        );
-                    });
-                    return result;
-                }
-
-                return containsParagraphs.length !== 0 ? [...containsParagraphs] : arrayOfPostContentCollapsed()
-            }
-
-            function uncollapsedContent() {
-                const result = [];
-                result.push(postCard.querySelector('[data-tag="post-content"]'));
-                return result;
-            }
-
-            return postContentCollapsed ? collapsedContent() : uncollapsedContent();
-        }
-
         function dateFor(postCard) {
             const textContent = postCard.querySelector('[data-tag="post-published-at"]').textContent;
             try {
@@ -161,6 +131,35 @@ async function main() {
                     year: year
                 }
             });
+
+        function postContent(postCard) {
+            const postContentCollapsed = postCard.querySelector('[data-tag="post-content-collapse"]');
+            return postContentCollapsed ? collapsedContent(postContentCollapsed) : uncollapsedContent(postCard);
+
+            function collapsedContent(postContent) {
+                const containsParagraphs = postContent.querySelectorAll('p');
+
+                return containsParagraphs.length !== 0 ? [...containsParagraphs] : arrayOfPostContentCollapsed(postContent)
+            }
+
+            function uncollapsedContent(postCard) {
+                const result = [];
+                result.push(postCard.querySelector('[data-tag="post-content"]'));
+                return result;
+            }
+
+            function arrayOfPostContentCollapsed(postContent) {
+                const notesHtmlWithBrTags = postContent.firstChild.firstChild.firstChild.firstChild.innerHTML;
+                const splitByBrTag = notesHtmlWithBrTags.split('<br><br>');
+                const result = [];
+                [1, 2].forEach(() => { // duplicating the notes so they match the output of finding by <p> tag
+                    splitByBrTag.forEach(note =>
+                        result.push({textContent: note})
+                    );
+                });
+                return result;
+            }
+        }
     });
 
     // print songs JSON
