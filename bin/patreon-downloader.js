@@ -21,8 +21,9 @@ async function main() {
         return [...document.querySelectorAll('[data-tag="post-card"]')]
             .filter(postCard => hasFile(postCard))
             .map(postCard => {
-                console.log("processing " + postCard.querySelector('a[data-tag="post-file-download"]').textContent);
-                const    secondAudioPlayerElement = postCard.querySelectorAll('[aria-label="Audio Player"]')[1];
+                const fileDownloadLink = postCard.querySelector('a[data-tag="post-file-download"]');
+                console.log("processing " + fileDownloadLink.textContent);
+                const secondAudioPlayerElement = postCard.querySelectorAll('[aria-label="Audio Player"]')[1];
                 const style = secondAudioPlayerElement.firstChild.firstChild.getAttribute('style');
                 const songNotes = postContent(postCard);
                 const date = dateFor(postCard);
@@ -36,8 +37,8 @@ async function main() {
 
                 return {
                     title: postCard.querySelector('[data-tag="post-title"]').textContent,
-                    file: postCard.querySelector('a[data-tag="post-file-download"]').textContent,
-                    url: postCard.querySelector('a[data-tag="post-file-download"]').href,
+                    file: fileDownloadLink.textContent,
+                    url: fileDownloadLink.href,
                     notes: validatedNotes(songNotes),
                     tags: postCard.querySelector('[data-tag="post-tags"]').firstChild.querySelector('div:nth-child(2').textContent,
                     artwork: artworkUrl,
