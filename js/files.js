@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const exec = require('child_process').exec;
 
 module.exports = function downloadTagAndOrganiseFiles(songs) {
@@ -31,12 +32,12 @@ module.exports = function downloadTagAndOrganiseFiles(songs) {
             return song.notes.join('\n').replace(/"/g, '\\"');
         }
 
-        const mp3Command = `./bin/download-mp3.sh "${song.url}" files/${song.file} "${reformatNotesForShellScript()}\n\n${song.tags}" ${song.year} "${song.title}" "${song.artwork}"`;
+        const mp3Command = `${path.resolve(__dirname, '../bin/download-mp3.sh')} "${song.url}" ${path.resolve(__dirname, '../files/' + song.file)} "${reformatNotesForShellScript()}\n\n${song.tags}" ${song.year} "${song.title}" "${song.artwork}"`;
         download(mp3Command);
     }
 
     function downloadWav(song) {
-        const wavCommand = `./bin/download-wav.sh "${song.url}" files/${song.file} "${song.title}"`;
+        const wavCommand = `${path.resolve(__dirname, '../bin/download-wav.sh')} "${song.url}" ${path.resolve(__dirname, '../files/' + song.file)} "${song.title}"`;
         download(wavCommand)
     }
 
@@ -49,4 +50,4 @@ module.exports = function downloadTagAndOrganiseFiles(songs) {
             }
         });
     }
-}
+};
