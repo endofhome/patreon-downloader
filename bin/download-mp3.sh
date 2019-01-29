@@ -11,6 +11,8 @@ YEAR=$4
 TITLE=$5
 ARTWORK_URL=$6
 
+__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 echo "downloading ${TITLE}"
 curl -s ${URL} --output ${FILE_PATH}
 
@@ -19,7 +21,7 @@ id3 -c "$COMMENT" -y ${YEAR} ${FILE_PATH} >/dev/null 2>&1
 
 echo "downloading artwork for ${TITLE}"
 TITLE_NO_WHITESPACE=$(echo ${TITLE} | sed -e 's/ /_/g')
-ARTWORK_FILE_PATH="files/cover-${TITLE_NO_WHITESPACE}.jpg"
+ARTWORK_FILE_PATH="$(dirname "${BASH_SOURCE[0]}")/../files/cover-${TITLE_NO_WHITESPACE}.jpg"
 curl -s ${ARTWORK_URL} --output ${ARTWORK_FILE_PATH}
 
 echo "embedding artwork"
@@ -27,4 +29,5 @@ eyeD3 --add-image "${ARTWORK_FILE_PATH}:FRONT_COVER" ${FILE_PATH} >/dev/null 2>&
 
 rm ${ARTWORK_FILE_PATH}
 
-./bin/transfer-file-to-media-centre.sh "${TITLE}" ${FILE_PATH}
+source ${__dir}/transfer-file-to-media-centre.sh "${TITLE}" ${FILE_PATH}
+
