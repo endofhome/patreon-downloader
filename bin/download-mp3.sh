@@ -10,7 +10,6 @@ COMMENT=$3
 YEAR=$4
 TITLE=$5
 ARTWORK_URL=$6
-EYED3=$(which eyeD3)
 
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -26,7 +25,7 @@ ARTWORK_FILE_PATH="$(dirname "${BASH_SOURCE[0]}")/../files/cover-${TITLE_NO_WHIT
 curl -s ${ARTWORK_URL} --output "${ARTWORK_FILE_PATH}"
 
 echo "embedding artwork"
-${EYED3} --add-image "${ARTWORK_FILE_PATH}:FRONT_COVER" "${FILE_PATH}" >/dev/null 2>&1
+/usr/local/bin/eyeD3 --add-image "${ARTWORK_FILE_PATH}:FRONT_COVER" "${FILE_PATH}" >/dev/null 2>&1
 
 rm "${ARTWORK_FILE_PATH}"
 
