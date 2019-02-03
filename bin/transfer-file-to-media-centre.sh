@@ -7,6 +7,8 @@ set -o pipefail
 TITLE=$1
 FILE_PATH=$2
 
+__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 echo "transferring ${TITLE} to media centre"
 
 if [[ $OSTYPE = "darwin"* ]]; then
@@ -20,6 +22,8 @@ if [[ $(uname -a | awk '{print $2}') = ${DESTINATION_MACHINE_NAME} ]]; then
 else
   scp "${FILE_PATH}" ${DESTINATION_MACHINE_USERNAME}@${DESTINATION_MACHINE_HOST}:"${DESTINATION}"
 fi
+
+"${__dir}/update-kodi-audio-library.sh"
 
 echo "$(date +"%Y-%m-%d %H:%M:%S"),$TITLE" >> "$(dirname "${BASH_SOURCE[0]}")/../persistence/downloaded.txt"
 echo "processing ${TITLE} completed"
