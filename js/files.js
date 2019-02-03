@@ -7,12 +7,12 @@ module.exports = function downloadTagAndOrganiseFiles(songs) {
         .toString()
         .split("\n")
         .map(line => {
-            return line.split(",")[1]
+            return line.split(",")[1];
         });
 
     songs.map(song => {
         if (downloadedTitles.includes(song.title)) {
-            console.log(`Already downloaded ${song.title}`)
+            console.log(`Already downloaded ${song.title}`);
         } else {
             if (song.file.endsWith('.mp3')) {
                 downloadMp3(song);
@@ -22,23 +22,27 @@ module.exports = function downloadTagAndOrganiseFiles(songs) {
                 throw {
                     message: `Song file is neither mp3 not wav.`,
                     song: song
-                }
+                };
             }
         }
     });
 
-    function downloadMp3(song) {
+    function escapeDoubleQuotes(s) {
+	return s.replace(/"/g, '\\"');      
+    } 
+
+    function downloadMp3(song) {	   
         function reformatNotesForShellScript() {
-            return song.notes.join('\n').replace(/"/g, '\\"');
+            return escapeDoubleQuotes(song.notes.join('\n'));
         }
 
-        const mp3Command = `${path.resolve(__dirname, '../bin/download-mp3.sh')} "${song.url}" ${path.resolve(__dirname, '../files/' + song.file)} "${reformatNotesForShellScript()}\n\n${song.tags}" ${song.year} "${song.title}" "${song.artwork}"`;
+        const mp3Command = `"${path.resolve(__dirname, '../bin/download-mp3.sh')}" "${song.url}" "${path.resolve(__dirname, '../files/' + song.file)}" "${reformatNotesForShellScript()}\n\n${escapeDoubleQuotes(song.tags)}" ${song.year} "${escapeDoubleQuotes(song.title)}" "${song.artwork}"`;
         download(mp3Command);
     }
 
     function downloadWav(song) {
-        const wavCommand = `${path.resolve(__dirname, '../bin/download-wav.sh')} "${song.url}" ${path.resolve(__dirname, '../files/' + song.file)} "${song.title}"`;
-        download(wavCommand)
+        const wavCommand = `"${path.resolve(__dirname, '../bin/download-wav.sh')}" "${song.url}" "${path.resolve(__dirname, '../files/' + song.file)}" "${escapeDoubleQuotes(song.title)}"`;
+        download(wavCommand);
     }
 
     function download(command) {
