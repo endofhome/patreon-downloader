@@ -7,8 +7,6 @@ set -o pipefail
 TITLE=$1
 FILE_PATH=$2
 
-__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
 echo "transferring ${TITLE} to media centre"
 
 if [[ $OSTYPE = "darwin"* ]]; then
