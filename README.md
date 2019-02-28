@@ -13,7 +13,7 @@ Once the file is downloaded, an update of the audio library in a Kodi installati
 ### Dependencies
 * [nodeJS](https://nodejs.org)
 * [cURL](https://curl.haxx.se/)
-* [id3 A.K.A. id3mtag](https://squell.github.io/id3/)  
+* [id3 A.K.A. id3mtag](https://squell.github.io/id3/) (do not be confused by [id3](http://manpages.ubuntu.com/manpages/cosmic/en/man1/id3.1.html) on Ubuntu systems, this is not the same tool)
 * [eyeD3](https://eyed3.readthedocs.io/en/latest/) (requires Python 2.7+ and libmagic)
 
 To install id3mtag on macOS, refer to my blog post at [https://endofhome.github.io/2019/01/11/compiling_id3mtag_for_macos.html](https://endofhome.github.io/2019/01/11/compiling_id3mtag_for_macos.html)
