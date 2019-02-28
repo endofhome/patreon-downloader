@@ -19,6 +19,15 @@ curl -s ${URL} --output "${FILE_PATH}"
 echo "tagging ${TITLE}"
 id3 -c "$COMMENT" -y ${YEAR} "${FILE_PATH}" >/dev/null 2>&1
 
+echo "checking for ALBUM tag"
+ALBUM=$(/usr/local/bin/eyeD3 --no-color "${FILE_PATH}" | grep album | cut -d ':' -f2 | tr -d '[:space:]')
+if [[ -z "${ALBUM}" ]]; then
+    echo "ALBUM tag is missing - setting to 'Patreon Posts'"
+    id3 -l "Patreon Posts" "${FILE_PATH}" >/dev/null 2>&1
+else
+    echo "ALBUM tag is present"
+fi
+
 echo "downloading artwork for ${TITLE}"
 TITLE_NO_WHITESPACE=$(echo ${TITLE} | sed -e 's/ /_/g')
 ARTWORK_FILE_PATH="$(dirname "${BASH_SOURCE[0]}")/../files/cover-${TITLE_NO_WHITESPACE}.jpg"
@@ -30,4 +39,3 @@ echo "embedding artwork"
 rm "${ARTWORK_FILE_PATH}"
 
 source "${__dir}/transfer-file-to-media-centre.sh" "${TITLE}" "${FILE_PATH}"
-
