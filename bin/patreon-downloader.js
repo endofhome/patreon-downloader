@@ -40,7 +40,7 @@ async function main() {
                     file: fileDownloadLink.textContent,
                     url: fileDownloadLink.href,
                     notes: validatedNotes(songNotes),
-                    tags: postCard.querySelector('[data-tag="post-tags"]').firstChild.querySelector('div:nth-child(2').textContent,
+                    tags: tagsOrEmptyString(postCard.querySelector('[data-tag="post-tags"]')),
                     artwork: artworkUrl,
                     publishedDate: date,
                     year: year
@@ -158,6 +158,15 @@ async function main() {
                 return songNotes;
             }
         }
+
+        function tagsOrEmptyString(postTags) {
+            if (postTags !== null) {
+                return postTags.firstChild.querySelector('div:nth-child(2').textContent;
+            } else {
+                return ""
+            }
+        }
+
     });
 
     // print songs JSON
