@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const exec = require('child_process').exec;
 
-module.exports = function downloadTagAndOrganiseFiles(songs) {
+module.exports = function downloadTagAndOrganiseFiles(songs, artistName) {
     const downloadedTitles = fs.readFileSync("persistence/downloaded.txt")
         .toString()
         .split("\n")
@@ -32,13 +32,6 @@ module.exports = function downloadTagAndOrganiseFiles(songs) {
     function process(song) {
         function reformatNotesForShellScript() {
             return escapeDoubleQuotes(song.notes.join('\n'));
-        }
-
-        let artistName;
-        try {
-            artistName = process.env.PATREON_ARTIST_NAME
-        } catch (e) {
-            throw Error(`Missing environment variable PATREON_ARTIST_NAME`)
         }
 
         const mp3Command = `"${path.resolve(__dirname, '../bin/process-file.sh')}" "${song.url}" "${path.resolve(__dirname, '../files/' + song.file)}" "${reformatNotesForShellScript()}\n\n${escapeDoubleQuotes(song.tags)}" ${song.year} "${escapeDoubleQuotes(song.title)}" "${song.artwork}", "${artistName}"`;

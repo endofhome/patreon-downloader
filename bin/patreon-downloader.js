@@ -6,13 +6,28 @@ const getLazyLoadedImages = require("../js/lazyLoadImages");
 const downloadTagAndOrganiseFiles = require("../js/files");
 
 async function main() {
+    let artistUrlFragment;
+    let artistName;
+
+    try {
+        artistUrlFragment = process.env.PATREON_ARTIST
+    } catch (e) {
+        throw Error(`Missing environment variable PATREON_ARTIST`)
+    }
+
+    try {
+        artistName = process.env.PATREON_ARTIST_NAME
+    } catch (e) {
+        throw Error(`Missing environment variable PATREON_ARTIST_NAME`)
+    }
+
     const browser = await puppeteer.launch({headless: true});
     const page = await browser.newPage();
     const waitTime = 0.5;
 
     await loadCookies(page);
     console.log("Starting Chromium and looking for new songs to download...");
-    await page.goto(`https://www.patreon.com/${process.env.PATREON_ARTIST}/posts`, {timeout: 100000, waitUntil: 'networkidle0'});
+    await page.goto(`https://www.patreon.com/${artistUrlFragment}/posts`, {timeout: 100000, waitUntil: 'networkidle0'});
     await getLazyLoadedImages(page, waitTime);
 
     const songs = await page.evaluate(() => {
@@ -173,7 +188,7 @@ async function main() {
     // console.log(JSON.stringify(songs));
 
     browser.close();
-    downloadTagAndOrganiseFiles(songs);
+    downloadTagAndOrganiseFiles(songs, artistName);
 }
 
 main();
