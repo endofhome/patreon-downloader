@@ -6,20 +6,8 @@ const getLazyLoadedImages = require("../js/lazyLoadImages");
 const downloadTagAndOrganiseFiles = require("../js/files");
 
 async function main() {
-    let artistUrlFragment;
-    let artistName;
-
-    try {
-        artistUrlFragment = process.env.PATREON_ARTIST
-    } catch (e) {
-        throw Error(`Missing environment variable PATREON_ARTIST`)
-    }
-
-    try {
-        artistName = process.env.PATREON_ARTIST_NAME
-    } catch (e) {
-        throw Error(`Missing environment variable PATREON_ARTIST_NAME`)
-    }
+    const artistUrlFragment = ensureExists("PATREON_ARTIST");
+    const artistName = ensureExists("PATREON_ARTIST_NAME");
 
     const browser = await puppeteer.launch({headless: true});
     const page = await browser.newPage();
@@ -189,6 +177,16 @@ async function main() {
 
     browser.close();
     downloadTagAndOrganiseFiles(songs, artistName);
+
+    function ensureExists(envVar) {
+        const result = process.env[envVar];
+
+        if (result === undefined) {
+            throw Error(`Missing environment variable ${envVar}`)
+        }
+
+        return result;
+    }
 }
 
 main();
