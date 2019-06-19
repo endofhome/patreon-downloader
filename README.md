@@ -4,7 +4,7 @@
 
 A collection of scripts to enable automatic downloading, tagging and organising of audio files posted by Patreon creators. The script uses [Puppeteer](https://developers.google.com/web/tools/puppeteer/) to control an instance of the Chromium browser. A Patreon account is required, and if you want to access subscription-only content, you will need to pay for it. This script purely replaces a manual process with an automated one. It can be run on a cron job or by some other scheduling mechanism.
 
-The script supports downloading of mp3 and wav files. mp3 files will also have a comment (COMM) id3v2 tag added, the content of which will be the text content of the blog post, followed by any tags set by the creator. The post's associated image will also be embeded as album art in the file. As wav does not support such metadata, no such tagging/embedding will occur.
+The script supports downloading of mp3 and wav files. Files will also have a comment (COMM) id3v2 tag added, the content of which will be the text content of the blog post, followed by any tags set by the creator. If artist, title or album tags are missing from the downloaded file they will be added with default values. The post's associated image will also be embeded as album art in the file.
 
 The script keeps track of any files downloaded in a text file and will not re-download them. Once files have been downloaded they will be moved to a final destination directory (for me, a hard disk attached to my media centre), either on the same machine using `mv` or elsewhere using `scp`.
 
@@ -29,7 +29,8 @@ Environment variables:
 
 | Variable | Description|
 |----------|------------|
-| PATREON_ARTIST | The Patreon artist/creator that you are supporting |
+| PATREON_ARTIST | The Patreon artist/creator that you are supporting, as per the URL of their Patreon page |
+| PATREON_ARTIST_NAME | The name of the artist/creator |
 | DESTINATION_DIRECTORY |    The directory you want to save your files in. For me, a directory in a disk attached to my media centre. This directory doesn't have to be on the same machine as you are running the script on, if you have an ssh key stored the script will be able to use `scp` to transfer the files |
 | DESTINATION_MACHINE_NAME | Name of the machine where the destination directory exists |
 | DESTINATION_MACHINE_USERNAME | Username for the account you will use to `scp` into the destination machine |

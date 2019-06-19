@@ -14,10 +14,8 @@ module.exports = function downloadTagAndOrganiseFiles(songs) {
         if (downloadedTitles.includes(song.title)) {
             console.log(`Already downloaded ${song.title}`);
         } else {
-            if (song.file.endsWith('.mp3')) {
-                downloadMp3(song);
-            } else if (song.file.endsWith('.wav')) {
-                downloadWav(song);
+            if (song.file.endsWith('.mp3') || song.file.endsWith('.wav')) {
+                process(song);
             } else {
                 throw {
                     message: `Song file is neither mp3 not wav.`,
@@ -28,21 +26,23 @@ module.exports = function downloadTagAndOrganiseFiles(songs) {
     });
 
     function escapeDoubleQuotes(s) {
-	return s.replace(/"/g, '\\"');      
+	    return s.replace(/"/g, '\\"');
     } 
 
-    function downloadMp3(song) {	   
+    function process(song) {
         function reformatNotesForShellScript() {
             return escapeDoubleQuotes(song.notes.join('\n'));
         }
 
-        const mp3Command = `"${path.resolve(__dirname, '../bin/download-mp3.sh')}" "${song.url}" "${path.resolve(__dirname, '../files/' + song.file)}" "${reformatNotesForShellScript()}\n\n${escapeDoubleQuotes(song.tags)}" ${song.year} "${escapeDoubleQuotes(song.title)}" "${song.artwork}"`;
-        download(mp3Command);
-    }
+        let artistName;
+        try {
+            artistName = process.env.PATREON_ARTIST_NAME
+        } catch (e) {
+            throw Error(`Missing environment variable PATREON_ARTIST_NAME`)
+        }
 
-    function downloadWav(song) {
-        const wavCommand = `"${path.resolve(__dirname, '../bin/download-wav.sh')}" "${song.url}" "${path.resolve(__dirname, '../files/' + song.file)}" "${escapeDoubleQuotes(song.title)}"`;
-        download(wavCommand);
+        const mp3Command = `"${path.resolve(__dirname, '../bin/process-file.sh')}" "${song.url}" "${path.resolve(__dirname, '../files/' + song.file)}" "${reformatNotesForShellScript()}\n\n${escapeDoubleQuotes(song.tags)}" ${song.year} "${escapeDoubleQuotes(song.title)}" "${song.artwork}", "${artistName}"`;
+        download(mp3Command);
     }
 
     function download(command) {
