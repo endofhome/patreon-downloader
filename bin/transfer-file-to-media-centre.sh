@@ -21,6 +21,7 @@ if [[ $(uname -a | awk '{print $2}') = ${DESTINATION_MACHINE_NAME} ]]; then
   mv "${FILE_PATH}" "${DESTINATION}"
 else
   scp "${FILE_PATH}" ${DESTINATION_MACHINE_USERNAME}@${DESTINATION_MACHINE_HOST}:"${DESTINATION}"
+  rm "{$FILE_PATH}"
 fi
 
 "${__dir}/update-kodi-audio-library.sh"
