@@ -6,8 +6,8 @@ const getLazyLoadedImages = require("../js/lazyLoadImages");
 const downloadTagAndOrganiseFiles = require("../js/files");
 
 async function main() {
-    const artistUrlFragment = ensureExists("PATREON_ARTIST");
-    const artistName = ensureExists("PATREON_ARTIST_NAME");
+    const requiredConfig = ["PATREON_ARTIST", "PATREON_ARTIST_NAME"];
+    const config = validateConfig(requiredConfig);
 
     const browser = await puppeteer.launch({headless: true});
     const page = await browser.newPage();
@@ -15,7 +15,7 @@ async function main() {
 
     await loadCookies(page);
     console.log("Starting Chromium and looking for new songs to download...");
-    await page.goto(`https://www.patreon.com/${artistUrlFragment}/posts`, {timeout: 100000, waitUntil: 'networkidle0'});
+    await page.goto(`https://www.patreon.com/${config.PATREON_ARTIST}/posts`, {timeout: 100000, waitUntil: 'networkidle0'});
     await getLazyLoadedImages(page, waitTime);
 
     const songs = await page.evaluate(() => {
@@ -176,16 +176,31 @@ async function main() {
     // console.log(JSON.stringify(songs));
 
     browser.close();
-    downloadTagAndOrganiseFiles(songs, artistName);
+    downloadTagAndOrganiseFiles(songs, config.PATREON_ARTIST_NAME);
 
-    function ensureExists(envVar) {
-        const result = process.env[envVar];
 
-        if (result === undefined) {
-            throw Error(`Missing environment variable ${envVar}`)
+    function validateConfig(requiredConfig) {
+        const missingConfig = [];
+        const validatedConfig = {};
+
+        requiredConfig.forEach(configItem => {
+            const result = process.env[configItem];
+
+            if (result === undefined) {
+                missingConfig.push(configItem)
+            } else {
+                validatedConfig[configItem] = result;
+            }
+        });
+
+        if (missingConfig.length > 0) {
+            throw Error(`\n\nMissing environment variables: \n${missingConfig.map(item => {
+                    return item + "\n"
+                }).join("")
+            }`);
+        } else {
+            return validatedConfig;
         }
-
-        return result;
     }
 }
 
