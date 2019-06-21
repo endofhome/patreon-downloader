@@ -59,4 +59,4 @@ echo "embedding artwork"
 
 rm "${ARTWORK_FILE_PATH}"
 
-source "${__dir}/transfer-file-to-media-centre.sh" "${TITLE}" "${FILE_PATH}"
+source "${__dir}/transfer-mp3-to-media-centre.sh" "${TITLE}" "${FILE_PATH}"
