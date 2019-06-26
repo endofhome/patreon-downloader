@@ -6,7 +6,17 @@ const getLazyLoadedImages = require("../js/lazyLoadImages");
 const downloadTagAndOrganiseFiles = require("../js/files");
 
 async function main() {
-    const requiredConfig = ["PATREON_ARTIST", "PATREON_ARTIST_NAME"];
+    const requiredConfig = [
+        "PATREON_ARTIST",
+        "PATREON_ARTIST_NAME",
+        "DESTINATION_DIRECTORY",
+        "DESTINATION_MACHINE_NAME",
+        "DESTINATION_MACHINE_USERNAME",
+        "DESTINATION_MACHINE_HOST",
+        "KODI_USERNAME",
+        "KODI_PASSWORD",
+        "KODI_PORT"
+    ];
     const config = validateConfig(requiredConfig);
 
     const browser = await puppeteer.launch({headless: true});
