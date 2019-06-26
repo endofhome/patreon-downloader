@@ -3,9 +3,16 @@ const path = require('path');
 const exec = require('child_process').exec;
 
 module.exports = function downloadTagAndOrganiseFiles(songs, artistName) {
-    const downloadedTitles = fs.readFileSync("persistence/downloaded.txt")
-        .toString()
+    let downloaded;
+    try {
+        downloaded = fs.readFileSync("persistence/downloaded.txt", "utf8")
+    } catch (e) {
+        downloaded = "";
+    }
+
+    const downloadedTitles = downloaded
         .split("\n")
+        .filter(Boolean)
         .map(line => {
             return line.split(",")[1];
         });
