@@ -36,4 +36,4 @@ echo "will not embed artwork, saving for later processing."
 ARTWORK_FILE_PATH="$(dirname "$FILE_PATH")/$(basename "$FILE_PATH" .wav).jpg"
 curl -s ${ARTWORK_URL} --output "${ARTWORK_FILE_PATH}"
 
-source "${__dir}/transfer-wav-to-media-centre.sh" "${TITLE}" "${FILE_PATH}" "$CUE_FILE_PATH" "$ARTWORK_FILE_PATH"
+source "${__dir}/transfer-files-to-media-centre.sh" "${TITLE}" "${FILE_PATH}" "$CUE_FILE_PATH" "$ARTWORK_FILE_PATH"
