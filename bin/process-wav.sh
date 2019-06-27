@@ -14,7 +14,7 @@ ARTIST_NAME=$7
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "downloading ${TITLE}"
-curl -s ${URL} --output "${FILE_PATH}"
+curl -sL ${URL} --output "${FILE_PATH}"
 
 echo "writing cue sheet for ${TITLE}"
 CUE_FILE_PATH="$(dirname "$FILE_PATH")/$(basename "$FILE_PATH" .wav).cue"
@@ -34,6 +34,6 @@ EOF
 echo "downloading artwork for ${TITLE}"
 echo "will not embed artwork, saving for later processing."
 ARTWORK_FILE_PATH="$(dirname "$FILE_PATH")/$(basename "$FILE_PATH" .wav).jpg"
-curl -s ${ARTWORK_URL} --output "${ARTWORK_FILE_PATH}"
+curl -sL ${ARTWORK_URL} --output "${ARTWORK_FILE_PATH}"
 
 source "${__dir}/transfer-files-to-media-centre.sh" "${TITLE}" "${FILE_PATH}" "$CUE_FILE_PATH" "$ARTWORK_FILE_PATH"
