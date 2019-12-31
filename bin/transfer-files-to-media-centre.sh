@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 
-set -o nounset
 set -o errexit
 set -o pipefail
 
 TITLE=$1
 FILE_PATH=$2
-CUE_FILE_PATH=$3
-ARTWORK_FILE_PATH=$4
+CUE_FILE_PATH=${3:-}
+ARTWORK_FILE_PATH=${4:-}
 
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
