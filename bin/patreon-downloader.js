@@ -30,8 +30,10 @@ async function main() {
 
     const songs = await page.evaluate(() => {
         // all executed in the context of the browser
+        const numberOfElementsToTest = 30;
 
         return [...document.querySelectorAll('[data-tag="post-card"]')]
+            .slice(0, numberOfElementsToTest)
             .filter(postCard => hasFile(postCard))
             .map(postCard => {
                 const fileDownloadLink = postCard.querySelector('a[data-tag="post-file-download"]');
