@@ -186,7 +186,11 @@ async function main() {
     // console.log(JSON.stringify(songs));
 
     browser.close();
-    downloadTagAndOrganiseFiles(songs, config.PATREON_ARTIST_NAME);
+    try {
+        downloadTagAndOrganiseFiles(songs, config.PATREON_ARTIST_NAME);
+    } catch (e) {
+        console.log(e);
+    }
 
 
     function validateConfig(requiredConfig) {
