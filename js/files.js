@@ -26,10 +26,8 @@ module.exports = function downloadTagAndOrganiseFiles(songs, artistName) {
             } else if (song.file.endsWith('.wav')) {
                 processWav(song);
             } else {
-                throw {
-                    message: `Song file is neither mp3 not wav.`,
-                    song: song
-                };
+                console.log("This filename has no file extension. Assuming it's an mp3");
+                processMp3(song)
             }
         }
     });
@@ -43,7 +41,8 @@ module.exports = function downloadTagAndOrganiseFiles(songs, artistName) {
     }
 
     function processMp3(song) {
-        const mp3Command = `"${path.resolve(__dirname, '../bin/process-mp3.sh')}" "${song.url}" "${path.resolve(__dirname, '../files/' + song.file)}" "${reformatNotesForShellScript(song)}\n\n${escapeDoubleQuotes(song.tags)}" ${song.year} "${escapeDoubleQuotes(song.title)}" "${song.artwork}" "${artistName}"`;
+        const filename = song.file.replace(".mp3", "") + ".mp3";
+        const mp3Command = `"${path.resolve(__dirname, '../bin/process-mp3.sh')}" "${song.url}" "${path.resolve(__dirname, '../files/' + filename)}" "${reformatNotesForShellScript(song)}\n\n${escapeDoubleQuotes(song.tags)}" ${song.year} "${escapeDoubleQuotes(song.title)}" "${song.artwork}" "${artistName}"`;
         download(mp3Command);
     }
 
