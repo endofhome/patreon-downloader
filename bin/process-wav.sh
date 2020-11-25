@@ -23,7 +23,7 @@ cat <<EOF > "$CUE_FILE_PATH"
 PERFORMER "${ARTIST_NAME}"
 TITLE "Patreon Posts"
 REM DATE "${YEAR}"
-FILE "$(basename ${FILE_PATH})" WAVE
+FILE "$(basename "$FILE_PATH")" WAVE
   TRACK 01 AUDIO
     TITLE "${TITLE}"
     PERFORMER "${ARTIST_NAME}"
