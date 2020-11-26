@@ -176,7 +176,9 @@ async function main() {
 
         function tagsOrEmptyString(postTags) {
             if (postTags !== null) {
-                return postTags.firstChild.querySelector('div:nth-child(2').textContent;
+		return [...postTags.firstChild.querySelector('div').children]
+			    .map(tagLink => tagLink.textContent)
+			    .join(",");
             } else {
                 return ""
             }
